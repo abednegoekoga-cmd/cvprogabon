@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Admin — CV Pro Gabon</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0f1923;font-family:'Segoe UI',sans-serif;color:#e8edf2;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+.card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:32px 24px;max-width:400px;width:100%;}
+h1{font-size:20px;margin-bottom:4px;color:#00b894;}
+p{color:#90a4ae;font-size:13px;margin-bottom:24px;}
+label{display:block;font-size:11px;color:#90a4ae;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+input{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:12px 14px;color:#e8edf2;font-size:14px;outline:none;margin-bottom:14px;}
+button{width:100%;background:linear-gradient(135deg,#00b894,#00cec9);border:none;border-radius:12px;padding:14px;color:#fff;font-weight:700;font-size:16px;cursor:pointer;margin-top:4px;}
+.result{display:none;background:rgba(0,184,148,0.1);border:2px solid rgba(0,184,148,0.4);border-radius:14px;padding:20px;text-align:center;margin-top:20px;}
+.result .code{font-size:48px;font-weight:900;color:#00b894;letter-spacing:8px;margin:8px 0;}
+.result p{color:#90a4ae;font-size:12px;margin:0;}
+.result .name{color:#e8edf2;font-size:14px;margin-bottom:8px;}
+.copy-btn{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:10px;color:#e8edf2;font-size:13px;cursor:pointer;width:100%;margin-top:12px;}
+.login{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:32px 24px;max-width:400px;width:100%;}
+</style>
+</head>
+<body>
+
+<div id="loginPage" class="login">
+  <h1 style="color:#00b894;margin-bottom:4px;">🔐 Accès Admin</h1>
+  <p style="color:#90a4ae;font-size:13px;margin-bottom:24px;">CV Pro Gabon — Réservé au propriétaire</p>
+  <label>Mot de passe</label>
+  <input type="password" id="pwd" placeholder="Entre ton mot de passe secret" onkeydown="if(event.key==='Enter')checkPwd()"/>
+  <button onclick="checkPwd()">Accéder →</button>
+  <p id="pwdError" style="color:#ef9a9a;font-size:12px;margin-top:10px;display:none;">Mot de passe incorrect.</p>
+</div>
+
+<div id="mainPage" class="card" style="display:none;">
+  <h1>⚙️ Générateur de codes</h1>
+  <p>Entre les infos du client pour générer son code de déblocage</p>
+
+  <label>Prénom du client</label>
+  <input type="text" id="prenom" placeholder="Ex: Jean-Pierre"/>
+
+  <label>Nom du client</label>
+  <input type="text" id="nom" placeholder="Ex: Mbadinga"/>
+
+  <label>Poste visé</label>
+  <input type="text" id="poste" placeholder="Ex: Responsable Logistique" onkeydown="if(event.key==='Enter')generate()"/>
+
+  <button onclick="generate()">🔑 Générer le code</button>
+
+  <div class="result" id="result">
+    <p class="name" id="clientName"></p>
+    <div class="code" id="codeDisplay"></div>
+    <p>Code à envoyer au client sur WhatsApp</p>
+    <button class="copy-btn" onclick="copyCode()">📋 Copier le code</button>
+  </div>
+
+  <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.08);">
+    <p style="color:#546e7a;font-size:11px;text-align:center;">
+      💡 Rappel : vérifie toujours le screenshot Moov Money avant d'envoyer le code
+    </p>
+  </div>
+</div>
+
+<script>
+// ── Mot de passe admin — change-le si tu veux ──
+const ADMIN_PWD = "narcisse2024";
+
+function checkPwd(){
+  const pwd = document.getElementById("pwd").value;
+  if(pwd === ADMIN_PWD){
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("mainPage").style.display = "block";
+  } else {
+    document.getElementById("pwdError").style.display = "block";
+  }
+}
+
+function generateCode(prenom, nom, poste){
+  const seed = (prenom + nom + poste).toLowerCase().replace(/\s/g, "");
+  let hash = 0;
+  for(let i = 0; i < seed.length; i++){
+    hash = (hash << 5) - hash + seed.charCodeAt(i);
+    hash |= 0;
+  }
+  return String(Math.abs(hash)).slice(0, 6).padStart(6, "1");
+}
+
+function generate(){
+  const prenom = document.getElementById("prenom").value.trim();
+  const nom = document.getElementById("nom").value.trim();
+  const poste = document.getElementById("poste").value.trim();
+
+  if(!prenom || !nom || !poste){
+    alert("Remplis tous les champs !");
+    return;
+  }
+
+  const code = generateCode(prenom, nom, poste);
+  document.getElementById("clientName").textContent = prenom + " " + nom + " — " + poste;
+  document.getElementById("codeDisplay").textContent = code;
+  document.getElementById("result").style.display = "block";
+}
+
+function copyCode(){
+  const code = document.getElementById("codeDisplay").textContent;
+  navigator.clipboard.writeText(code);
+  event.target.textContent = "✅ Copié !";
+  setTimeout(()=> event.target.textContent = "📋 Copier le code", 2000);
+}
+</script>
+</body>
+</html>
