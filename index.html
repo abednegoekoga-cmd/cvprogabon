@@ -1,4 +1,318 @@
-const printDoc=()=>{
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="description" content="Créez un CV professionnel en 5 minutes et augmentez vos chances d'obtenir un emploi au Gabon."/>
+<title>CV Pro Gabon ✨ — CV Professionnel en 5 minutes</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0f1923;font-family:'Segoe UI',system-ui,sans-serif;color:#e8edf2;}
+input,select,textarea{color:#e8edf2!important;}
+input::placeholder,textarea::placeholder{color:#546e7a!important;}
+select option{background:#1a2f45;color:#e8edf2;}
+@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+@keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+.fade{animation:fade 0.3s ease;}
+.pulse{animation:pulse 2s infinite;}
+
+/* CV Gratuit - Basique noir et blanc */
+.cv-gratuit{font-family:'Georgia',serif;color:#1a1a2e;line-height:1.6;position:relative;}
+.cv-gratuit h1{font-size:20px;color:#333;border-bottom:2px solid #999;padding-bottom:6px;margin-bottom:4px;}
+.cv-gratuit .subtitle{font-size:13px;color:#666;font-style:italic;margin-bottom:10px;}
+.cv-gratuit .contact-line{font-size:12px;color:#666;margin-bottom:3px;}
+.cv-gratuit h2{font-size:14px;color:#555;text-transform:uppercase;letter-spacing:1px;margin:16px 0 6px;border-left:3px solid #999;padding-left:8px;}
+.cv-gratuit p,.cv-gratuit li{font-size:14px;color:#444;margin-bottom:6px;}
+.cv-gratuit ul{padding-left:16px;}
+.cv-gratuit .watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-35deg);font-size:22px;font-weight:900;color:rgba(0,0,0,0.06);white-space:nowrap;pointer-events:none;z-index:10;letter-spacing:2px;width:100%;text-align:center;}
+.cv-gratuit .footer-brand{text-align:center;margin-top:20px;padding-top:10px;border-top:1px solid #eee;font-size:10px;color:#aaa;font-style:italic;}
+
+/* CV Premium Moderne */
+.cv-moderne{font-family:'Segoe UI',sans-serif;color:#2d2d2d;line-height:1.6;}
+.cv-moderne .header{background:linear-gradient(135deg,#00b894,#00cec9);color:white;padding:20px;margin:-1px -1px 16px -1px;border-radius:4px 4px 0 0;}
+.cv-moderne .header h1{font-size:22px;font-weight:700;margin-bottom:4px;}
+.cv-moderne .header .subtitle{font-size:14px;opacity:0.9;}
+.cv-moderne .header .contacts{font-size:12px;margin-top:8px;opacity:0.85;}
+.cv-moderne h2{font-size:13px;color:#00b894;text-transform:uppercase;letter-spacing:1.5px;margin:16px 0 8px;display:flex;align-items:center;gap:8px;}
+.cv-moderne h2::after{content:'';flex:1;height:1px;background:#e0e0e0;}
+.cv-moderne p,.cv-moderne li{font-size:14px;margin-bottom:6px;color:#444;}
+.cv-moderne ul{padding-left:18px;}
+
+/* CV Premium Créatif */
+.cv-creatif{font-family:'Segoe UI',sans-serif;color:#2d2d2d;line-height:1.6;display:grid;grid-template-columns:35% 65%;}
+.cv-creatif .sidebar{background:#1a237e;color:white;padding:20px;min-height:400px;}
+.cv-creatif .sidebar h1{font-size:18px;font-weight:700;margin-bottom:4px;color:white;}
+.cv-creatif .sidebar .subtitle{font-size:12px;opacity:0.8;margin-bottom:16px;}
+.cv-creatif .sidebar h2{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#80cbc4;margin:14px 0 6px;border-bottom:1px solid rgba(255,255,255,0.2);padding-bottom:4px;}
+.cv-creatif .sidebar p,.cv-creatif .sidebar li{font-size:11px;color:rgba(255,255,255,0.85);margin-bottom:4px;}
+.cv-creatif .sidebar ul{padding-left:14px;}
+.cv-creatif .main{padding:20px;}
+.cv-creatif .main h2{font-size:13px;color:#1a237e;text-transform:uppercase;letter-spacing:1px;margin:14px 0 8px;border-bottom:2px solid #e8f5e9;padding-bottom:4px;}
+.cv-creatif .main p,.cv-creatif .main li{font-size:14px;color:#444;margin-bottom:6px;}
+.cv-creatif .main ul{padding-left:18px;}
+
+/* CV Premium Élite */
+.cv-elite{font-family:'Georgia',serif;color:#1a1a2e;line-height:1.7;}
+.cv-elite .header{border-left:5px solid #c0392b;padding-left:16px;margin-bottom:20px;}
+.cv-elite .header h1{font-size:26px;color:#c0392b;font-weight:700;margin-bottom:4px;}
+.cv-elite .header .subtitle{font-size:15px;color:#555;font-style:italic;}
+.cv-elite .contact-bar{background:#f8f8f8;border:1px solid #eee;border-radius:8px;padding:10px 14px;display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
+.cv-elite .contact-bar span{font-size:12px;color:#666;}
+.cv-elite h2{font-size:14px;color:#c0392b;text-transform:uppercase;letter-spacing:2px;margin:18px 0 10px;position:relative;padding-bottom:6px;}
+.cv-elite h2::after{content:'';position:absolute;bottom:0;left:0;width:40px;height:2px;background:#c0392b;}
+.cv-elite p,.cv-elite li{font-size:15px;color:#333;margin-bottom:8px;}
+.cv-elite ul{padding-left:18px;}
+
+/* Bouton WhatsApp flottant */
+.wa-float{position:fixed;bottom:24px;right:20px;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.4);cursor:pointer;z-index:999;text-decoration:none;transition:transform 0.2s;}
+.wa-float:hover{transform:scale(1.1);}
+.wa-float svg{width:30px;height:30px;fill:white;}
+.blur-zone{filter:blur(5px);user-select:none;pointer-events:none;position:relative;}
+.blur-zone::after{content:"🔒 Débloquer avec Premium";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,184,148,0.9);color:white;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;}
+@media print{
+  body{background:white!important;}
+  .wa-float,.no-print{display:none!important;}
+  .cv-preview{box-shadow:none!important;border-radius:0!important;padding:20px!important;}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- Bouton WhatsApp flottant -->
+<a href="https://wa.me/24162169712?text=Bonjour%20je%20souhaite%20g%C3%A9n%C3%A9rer%20mon%20CV%20sur%20CV%20Pro%20Gabon" target="_blank" class="wa-float" title="Contactez-nous sur WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<script type="text/babel">
+const {useState,useEffect}=React;
+const PRIX=2000;
+const STEPS=["Infos perso","Expérience","Formation","Document"];
+const VILLES=["Libreville","Port-Gentil","Franceville","Oyem","Moanda","Mouila","Lambaréné","Tchibanga","Koulamoutou","Makokou","Bitam","Ntoum","Owendo","Autre"];
+const SECTEURS=["Logistique & Supply Chain","Pétrole & Gaz","BTP & Construction","Finance & Banque","Commerce & Vente","Administration publique","Santé","Éducation","Télécommunications","Autre"];
+const NIVEAUX=["Bac","Bac+2 / BTS","Bac+3 / Licence","Bac+4 / Master 1","Bac+5 / Master 2","Doctorat"];
+const ECOLES=["AFRAM","UOB (Université Omar Bongo)","USTM","ENS","ENSET","Institut Supérieur de Technologie","ESAG","IAI Gabon","École des Cadres","PIGIER Gabon","Autre"];
+const FORM_INIT={prenom:"",nom:"",email:"",telephone:"",ville:"Libreville",poste:"",secteur:"",entreprise:"",experience:"",competences:"",langues:"Français",niveau:"",formation:"",etablissement:"",typeDoc:"les_deux",modele:"moderne"};
+
+// Compteur CV créés (simulé)
+const CV_COUNT = 47;
+
+// Modèles
+const MODELES_GRATUIT=[{id:"classique_gratuit",label:"Basique",icon:"📋",desc:"Gratuit — avec mention CV Pro Gabon",free:true}];
+const MODELES_PREMIUM=[
+  {id:"moderne",label:"Moderne",icon:"✨",desc:"Header coloré élégant",free:false},
+  {id:"creatif",label:"Créatif",icon:"🎨",desc:"Deux colonnes professionnel",free:false},
+  {id:"elite",label:"Élite",icon:"👑",desc:"Style cadre supérieur",free:false},
+];
+
+function genCVGratuit(f){
+  const exp=(f.experience||"").split(/[;\n]/).filter(e=>e.trim().length>3).map(e=>`<li>${e.trim()}</li>`).join("")||`<li>${f.experience||"À compléter"}</li>`;
+  const comp=(f.competences||"").split(/[,;\n]/).filter(c=>c.trim().length>2).map(c=>`<li>${c.trim()}</li>`).join("")||`<li>${f.competences||"À compléter"}</li>`;
+  return `<div class="cv-gratuit">
+<div class="watermark">CV PRO GABON — APERÇU GRATUIT</div>
+<h1>${f.prenom} ${f.nom.toUpperCase()}</h1>
+<p class="subtitle">${f.poste}</p>
+${f.email?`<p class="contact-line">📧 ${f.email}</p>`:""}
+<p class="contact-line">📍 ${f.ville||"Libreville"}, Gabon</p>
+<h2>Profil</h2>
+<p>Professionnel en ${f.secteur}, titulaire d'un ${f.niveau} en ${f.formation}.</p>
+<h2>Expériences</h2><ul>${exp}</ul>
+<h2>Compétences</h2><ul>${comp}</ul>
+<h2>Formation</h2>
+<ul><li><strong>${f.niveau}</strong> — ${f.formation}${f.etablissement?` | ${f.etablissement}`:""}</li></ul>
+<h2>Langues</h2><p>${f.langues||"Français"}</p>
+<div class="footer-brand">✨ Généré gratuitement sur CV Pro Gabon — cvprogabon.netlify.app</div>
+</div>`;
+}
+
+function genCVPremium(f,modele){
+  const profil=`Professionnel dynamique spécialisé en ${f.poste}, titulaire d'un ${f.niveau} en ${f.formation}${f.etablissement?` obtenu à ${f.etablissement}`:""}. Fort d'une expérience solide dans le secteur ${f.secteur} au Gabon, je me distingue par ${(f.competences||"mes compétences").split(/[,;]/)[0].trim()} et ma capacité d'adaptation. Je souhaite mettre mon expertise au service de ${f.entreprise||"votre organisation"}.`;
+  const expItems=(f.experience||"").split(/[;\n]/).filter(e=>e.trim().length>3).map(e=>`<li>${e.trim()}</li>`).join("")||`<li>${f.experience||"À compléter"}</li>`;
+  const compItems=(f.competences||"").split(/[,;\n]/).filter(c=>c.trim().length>2).map(c=>`<li>${c.trim()}</li>`).join("")||`<li>${f.competences||"À compléter"}</li>`;
+
+  if(modele==="moderne") return `<div class="cv-moderne">
+<div class="header">
+  <h1>${f.prenom} ${f.nom.toUpperCase()}</h1>
+  <div class="subtitle">${f.poste}</div>
+  <div class="contacts">${f.email?`📧 ${f.email}  `:""}${f.telephone?`📞 +241${f.telephone}  `:""}📍 ${f.ville}, Gabon</div>
+</div>
+<h2>Profil professionnel</h2><p>${profil}</p>
+<h2>Expériences professionnelles</h2><ul>${expItems}</ul>
+<h2>Compétences</h2><ul>${compItems}</ul>
+<h2>Formation</h2><ul><li><strong>${f.niveau}</strong> — ${f.formation}${f.etablissement?` | ${f.etablissement}`:""}</li></ul>
+<h2>Langues</h2><p>${f.langues||"Français"}</p>
+</div>`;
+
+  if(modele==="creatif") return `<div class="cv-creatif">
+<div class="sidebar">
+  <h1>${f.prenom}<br/>${f.nom.toUpperCase()}</h1>
+  <div class="subtitle">${f.poste}</div>
+  <h2>Contact</h2>
+  ${f.email?`<p>📧 ${f.email}</p>`:""}
+  ${f.telephone?`<p>📞 +241${f.telephone}</p>`:""}
+  <p>📍 ${f.ville}, Gabon</p>
+  <h2>Compétences</h2><ul>${compItems}</ul>
+  <h2>Langues</h2><p>${f.langues||"Français"}</p>
+</div>
+<div class="main">
+  <h2>Profil</h2><p>${profil}</p>
+  <h2>Expériences</h2><ul>${expItems}</ul>
+  <h2>Formation</h2><ul><li><strong>${f.niveau}</strong> — ${f.formation}${f.etablissement?` | ${f.etablissement}`:""}</li></ul>
+</div>
+</div>`;
+
+  // Elite
+  return `<div class="cv-elite">
+<div class="header">
+  <h1>${f.prenom} ${f.nom.toUpperCase()}</h1>
+  <div class="subtitle">${f.poste} — ${f.secteur}</div>
+</div>
+<div class="contact-bar">
+  ${f.email?`<span>📧 ${f.email}</span>`:""}
+  ${f.telephone?`<span>📞 +241${f.telephone}</span>`:""}
+  <span>📍 ${f.ville||"Libreville"}, Gabon</span>
+</div>
+<h2>Profil professionnel</h2><p>${profil}</p>
+<h2>Expériences professionnelles</h2><ul>${expItems}</ul>
+<h2>Compétences clés</h2><ul>${compItems}</ul>
+<h2>Formation académique</h2>
+<ul><li><strong>${f.niveau}</strong> — ${f.formation}${f.etablissement?` | ${f.etablissement}`:""}</li></ul>
+<h2>Langues</h2><p>${f.langues||"Français"}</p>
+</div>`;
+}
+
+function genLettre(f){
+  const date=new Date().toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"});
+  const ent=f.entreprise||"votre entreprise";
+  const comp=(f.competences||"mes compétences").split(/[,;]/)[0].trim();
+  const exp=(f.experience||"").split(/[;\n]/)[0].trim();
+  return `<div style="font-family:Georgia,serif;color:#1a1a2e;line-height:1.8;font-size:13px;">
+<p style="text-align:right">${f.ville||"Libreville"}, le ${date}</p>
+<p><strong>${f.prenom} ${f.nom}</strong><br/>${f.email||""}<br/>${f.telephone?`+241${f.telephone}`:""}</p>
+<p style="margin-top:16px"><strong>Objet : Candidature au poste de ${f.poste}</strong></p>
+<p>Madame, Monsieur,</p>
+<p>C'est avec un vif intérêt que je vous soumets ma candidature au poste de <strong>${f.poste}</strong> au sein de ${ent}. Titulaire d'un <strong>${f.niveau} en ${f.formation}</strong>${f.etablissement?` obtenu à ${f.etablissement}`:""},  je possède une solide formation dans le domaine du ${f.secteur}.</p>
+<p>${exp.length>5?`Au cours de mon parcours, j'ai notamment ${exp}. Ces expériences m'ont`:"Ces expériences m'ont"} permis de développer des compétences solides en <strong>${comp}</strong>, ainsi qu'une grande rigueur professionnelle et un sens aigu des responsabilités.</p>
+<p>Convaincu(e) que mon profil correspond aux exigences du poste et aux valeurs de ${ent}, je reste à votre disposition pour tout entretien à votre convenance.</p>
+<p>Dans l'attente d'une réponse favorable, veuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.</p>
+<p style="margin-top:24px"><strong>${f.prenom} ${f.nom}</strong></p>
+</div>`;
+}
+
+function generateCode(prenom,nom,poste){
+  const seed=(prenom+nom+poste).toLowerCase().replace(/\s/g,"");
+  let hash=0;
+  for(let i=0;i<seed.length;i++){hash=(hash<<5)-hash+seed.charCodeAt(i);hash|=0;}
+  return String(Math.abs(hash)).slice(0,6).padStart(6,"1");
+}
+
+function Field({label,value,onChange,placeholder,type="text"}){
+  return(<div style={{marginBottom:14}}>
+    <div style={{fontSize:11,color:"#90a4ae",marginBottom:6,fontWeight:600,textTransform:"uppercase",letterSpacing:"0.5px"}}>{label}</div>
+    <input type={type} value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder}
+      style={{width:"100%",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,padding:"11px 14px",color:"#e8edf2",fontSize:14,outline:"none",boxSizing:"border-box"}}/>
+  </div>);
+}
+function SelectField({label,value,onChange,options}){
+  return(<div style={{marginBottom:14}}>
+    <div style={{fontSize:11,color:"#90a4ae",marginBottom:6,fontWeight:600,textTransform:"uppercase",letterSpacing:"0.5px"}}>{label}</div>
+    <select value={value} onChange={e=>onChange(e.target.value)}
+      style={{width:"100%",background:"#1a2f45",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,padding:"11px 14px",color:value?"#e8edf2":"#546e7a",fontSize:14,outline:"none",cursor:"pointer"}}>
+      <option value="">Choisir...</option>
+      {options.map(o=><option key={o} value={o}>{o}</option>)}
+    </select>
+  </div>);
+}
+function Textarea({label,value,onChange,placeholder,rows=4}){
+  return(<div style={{marginBottom:14}}>
+    <div style={{fontSize:11,color:"#90a4ae",marginBottom:6,fontWeight:600,textTransform:"uppercase",letterSpacing:"0.5px"}}>{label}</div>
+    <textarea value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} rows={rows}
+      style={{width:"100%",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,padding:"11px 14px",color:"#e8edf2",fontSize:14,outline:"none",resize:"vertical",boxSizing:"border-box",fontFamily:"inherit"}}/>
+  </div>);
+}
+
+function App(){
+  const [page,setPage]=useState("home");
+  const [tapCount,setTapCount]=useState(0);
+  const [showAdminModal,setShowAdminModal]=useState(false);
+  const [adminPwd,setAdminPwd]=useState("");
+  const [adminUnlocked,setAdminUnlocked]=useState(false);
+  const [adminPrenom,setAdminPrenom]=useState("");
+  const [adminNom,setAdminNom]=useState("");
+  const [adminPoste,setAdminPoste]=useState("");
+  const [adminCode,setAdminCode]=useState("");
+
+  const handleLogoTap=()=>{
+    const newCount=tapCount+1;
+    setTapCount(newCount);
+    if(newCount>=5){setTapCount(0);setShowAdminModal(true);}
+    setTimeout(()=>setTapCount(0),2000);
+  };
+
+  const checkAdminPwd=()=>{
+    if(adminPwd==="narcisse2024"){setAdminUnlocked(true);setAdminPwd("");}
+    else{alert("Mot de passe incorrect !");}
+  };
+
+  const genAdminCode=()=>{
+    if(!adminPrenom||!adminNom||!adminPoste){alert("Remplis tous les champs !");return;}
+    const code=generateCode(adminPrenom,adminNom,adminPoste);
+    setAdminCode(code);
+  }; // home | form | result
+  const [step,setStep]=useState(0);
+  const [form,setForm]=useState(()=>{try{const s=localStorage.getItem("cvpro_form");return s?JSON.parse(s):FORM_INIT;}catch{return FORM_INIT;}});
+  const [result,setResult]=useState(null);
+  const [isPaid,setIsPaid]=useState(false);
+  const [activeTab,setActiveTab]=useState("cv");
+  const [copied,setCopied]=useState(false);
+  const [showPayModal,setShowPayModal]=useState(false);
+  const [codeInput,setCodeInput]=useState("");
+  const [codeError,setCodeError]=useState("");
+
+  useEffect(()=>{try{localStorage.setItem("cvpro_form",JSON.stringify(form));}catch{}},[form]);
+  const up=(k,v)=>setForm(f=>({...f,[k]:v}));
+  const ok=()=>{
+    if(step===0)return form.prenom&&form.nom&&form.poste&&form.secteur;
+    if(step===1)return form.experience.length>5;
+    if(step===2)return form.niveau&&form.formation;
+    return true;
+  };
+  const pct=(step/(STEPS.length-1))*100;
+  const isFreePlan=form.modele==="classique_gratuit";
+
+  const genDoc=(paid)=>{
+    let cv;
+    if(!paid||isFreePlan){cv=genCVGratuit(form);}
+    else if(paid==="preview"){
+      // Aperçu Premium avec expériences floutées
+      const cvFull=genCVPremium(form,form.modele);
+      cv=cvFull
+        .replace(/<h2[^>]*>Expériences[^<]*<\/h2><ul>([\s\S]*?)<\/ul>/,
+          (match,p1)=>`${match.replace(p1,'<span class="blur-zone">'+p1+'</span>')}`)
+        .replace(/<h2[^>]*>Compétences[^<]*<\/h2><ul>([\s\S]*?)<\/ul>/,
+          (match,p1)=>`${match.replace(p1,'<span class="blur-zone">'+p1+'</span>')}`);
+    }
+    else{cv=genCVPremium(form,form.modele);}
+    const lettre=genLettre(form);
+    setResult({cv,lettre});
+    setIsPaid(paid===true&&!isFreePlan);
+    setActiveTab("cv");
+    setPage("result");
+  };
+
+  const verifyCode=()=>{
+    const expected=generateCode(form.prenom,form.nom,form.poste);
+    if(codeInput.trim()===expected){setShowPayModal(false);setCodeError("");genDoc(true);}
+    else{setCodeError("Code incorrect. Vérifie le code reçu sur WhatsApp.");}
+  };
+
+  const printDoc=()=>{
     const html = activeTab==="cv" ? result.cv : result.lettre;
     const win = window.open('','_blank');
     win.document.write(`<!DOCTYPE html><html><head><meta charset="utf-8"/><title>CV Pro Gabon</title><style>
@@ -17,24 +331,510 @@ const printDoc=()=>{
       .cv-elite h2{color:#c0392b;text-transform:uppercase;letter-spacing:2px;}
       .cv-elite .contact-bar{background:#f8f8f8;padding:10px 14px;border-radius:8px;margin-bottom:20px;}
       .blur-zone{filter:blur(5px);user-select:none;pointer-events:none;position:relative;}
-      .blur-zone::after{content:"🔒 Débloquer avec Premium";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,184,148,0.9);color:white;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;}
-      @media print{body{margin:15px;}}
+.blur-zone::after{content:"🔒 Débloquer avec Premium";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,184,148,0.9);color:white;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;}
+@media print{body{margin:15px;}}
     </style></head><body>${html}</body></html>`);
     win.document.close();
     win.focus();
     setTimeout(()=>{win.print();},500);
-};
+  };
 
-const downloadPDF=()=>{
-    if(!html2pdf){alert("Impossible de télécharger. Réessaye !");return;}
-    const element=document.createElement("div");
-    element.innerHTML=activeTab==="cv"?result.cv:result.lettre;
-    const opt={
-        margin:10,
-        filename:`${form.prenom}_${form.nom}_CV.pdf`,
-        image:{type:"jpeg",quality:0.98},
-        html2canvas:{scale:2},
-        jsPDF:{orientation:"portrait",unit:"mm",format:"a4"}
-    };
-    html2pdf().set(opt).from(element).save();
-};
+  const copy=html=>{
+    const d=document.createElement("div");d.innerHTML=html;
+    navigator.clipboard.writeText(d.innerText);
+    setCopied(true);setTimeout(()=>setCopied(false),2000);
+  };
+
+  const reset=()=>{
+    setResult(null);setPage("home");setStep(0);setIsPaid(false);
+    setForm(FORM_INIT);setCodeInput("");setCodeError("");setShowPayModal(false);
+    try{localStorage.removeItem("cvpro_form");}catch{}
+  };
+
+  const C={
+    root:{minHeight:"100vh",background:"linear-gradient(135deg,#0f1923 0%,#1a2f45 50%,#0f1923 100%)"},
+    hdr:{background:"rgba(255,255,255,0.04)",borderBottom:"1px solid rgba(255,255,255,0.08)",padding:"16px 20px",display:"flex",alignItems:"center",justifyContent:"space-between"},
+    logo:{width:38,height:38,borderRadius:10,background:"linear-gradient(135deg,#00b894,#00cec9)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18},
+    wrap:{maxWidth:680,margin:"0 auto",padding:"28px 16px"},
+    card:{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:20,padding:"24px 20px",marginBottom:20},
+    btnP:{padding:"14px 24px",borderRadius:12,border:"none",background:"linear-gradient(135deg,#00b894,#00cec9)",color:"#fff",fontWeight:700,fontSize:15,cursor:"pointer",width:"100%"},
+    btnS:{padding:"13px 20px",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:12,color:"#e8edf2",fontWeight:600,cursor:"pointer",fontSize:14},
+  };
+
+  // PAGE ACCUEIL
+  if(page==="home") return(
+    <div style={C.root}>
+      <div style={C.hdr}>
+        <div style={{display:"flex",alignItems:"center",gap:10}}>
+          <div style={C.logo} onClick={handleLogoTap}>✨</div>
+          <div><div style={{fontWeight:700,fontSize:17}}>CV Pro Gabon</div><div style={{fontSize:11,color:"#64b5f6"}}>Générateur de CV · Libreville 🇬🇦</div></div>
+        </div>
+      </div>
+
+      <div style={C.wrap}>
+        {/* Hero */}
+        <div style={{textAlign:"center",padding:"40px 0 32px"}} className="fade">
+          <div style={{fontSize:52,marginBottom:16}}>📄</div>
+          <h1 style={{fontSize:24,fontWeight:800,lineHeight:1.3,marginBottom:12}}>
+            Créez un CV professionnel<br/>
+            <span style={{color:"#00b894"}}>en 5 minutes</span> et augmentez<br/>
+            vos chances d'emploi au Gabon
+          </h1>
+          <p style={{color:"#90a4ae",fontSize:14,marginBottom:24,lineHeight:1.6}}>
+            Plus de <strong style={{color:"#00b894"}}>{CV_COUNT} CV</strong> déjà créés sur CV Pro Gabon 🇬🇦
+          </p>
+          <button onClick={()=>setPage("form")} className="pulse" style={{...C.btnP,fontSize:17,padding:"16px 32px",width:"auto",display:"inline-block"}}>
+            ✨ Créer mon CV gratuitement
+          </button>
+          <p style={{color:"#546e7a",fontSize:12,marginTop:10}}>Aperçu gratuit · Premium à 2 000 FCFA</p>
+        </div>
+
+        {/* Plans */}
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:32}}>
+          {/* Gratuit */}
+          <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:16,padding:"20px 16px",textAlign:"center"}}>
+            <div style={{fontSize:28,marginBottom:8}}>📋</div>
+            <div style={{fontWeight:700,fontSize:15,marginBottom:4}}>Gratuit</div>
+            <div style={{color:"#00b894",fontWeight:800,fontSize:20,marginBottom:12}}>0 FCFA</div>
+            <div style={{color:"#90a4ae",fontSize:12,textAlign:"left"}}>
+              <p style={{marginBottom:6}}>✅ 1 modèle basique</p>
+              <p style={{marginBottom:6}}>✅ CV simple</p>
+              <p style={{marginBottom:6}}>⚠️ Mention CV Pro Gabon</p>
+              <p style={{marginBottom:6}}>❌ Pas de lettre</p>
+              <p>❌ Design limité</p>
+            </div>
+          </div>
+          {/* Premium */}
+          <div style={{background:"rgba(0,184,148,0.1)",border:"2px solid rgba(0,184,148,0.4)",borderRadius:16,padding:"20px 16px",textAlign:"center",position:"relative"}}>
+            <div style={{position:"absolute",top:-10,left:"50%",transform:"translateX(-50%)",background:"#00b894",color:"#fff",fontSize:10,fontWeight:700,padding:"3px 12px",borderRadius:20}}>RECOMMANDÉ</div>
+            <div style={{fontSize:28,marginBottom:8}}>👑</div>
+            <div style={{fontWeight:700,fontSize:15,marginBottom:4}}>Premium</div>
+            <div style={{color:"#00b894",fontWeight:800,fontSize:20,marginBottom:12}}>2 000 FCFA</div>
+            <div style={{color:"#90a4ae",fontSize:12,textAlign:"left"}}>
+              <p style={{marginBottom:6}}>✅ 3 modèles exclusifs</p>
+              <p style={{marginBottom:6}}>✅ CV professionnel</p>
+              <p style={{marginBottom:6}}>✅ Sans filigrane</p>
+              <p style={{marginBottom:6}}>✅ Lettre de motivation</p>
+              <p>✅ Design élégant</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Témoignage */}
+        <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:16,padding:"20px",marginBottom:24}}>
+          <p style={{color:"#90a4ae",fontSize:13,fontStyle:"italic",marginBottom:8}}>
+            "C'est super avantageux, tu gagnes en temps et c'est moins cher. C'est un bon prix !"
+          </p>
+          <p style={{color:"#64b5f6",fontSize:12,fontWeight:600}}>— Paul, Libreville 🇬🇦</p>
+        </div>
+
+        {/* CTA final */}
+        <button onClick={()=>setPage("form")} style={C.btnP}>
+          🚀 Commencer maintenant
+        </button>
+        <p style={{color:"#546e7a",fontSize:11,textAlign:"center",marginTop:12}}>
+          💬 Des questions ? Contacte-nous sur WhatsApp → 062 16 97 12
+        </p>
+      </div>
+
+      {/* Modal Admin Secret */}
+      {showAdminModal&&(
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.9)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:999,padding:20}}>
+          <div style={{background:"#1a2f45",borderRadius:20,padding:28,maxWidth:380,width:"100%",border:"1px solid rgba(255,255,255,0.1)"}}>
+            {!adminUnlocked?(
+              <div>
+                <div style={{textAlign:"center",marginBottom:20}}>
+                  <div style={{fontSize:36,marginBottom:8}}>🔐</div>
+                  <h2 style={{fontSize:18}}>Accès Admin</h2>
+                  <p style={{color:"#90a4ae",fontSize:13,marginTop:4}}>Réservé au propriétaire</p>
+                </div>
+                <div style={{marginBottom:14}}>
+                  <div style={{fontSize:11,color:"#90a4ae",marginBottom:6,fontWeight:600,textTransform:"uppercase"}}>Mot de passe</div>
+                  <input type="password" value={adminPwd} onChange={e=>setAdminPwd(e.target.value)}
+                    onKeyDown={e=>e.key==="Enter"&&checkAdminPwd()}
+                    placeholder="Mot de passe secret"
+                    style={{width:"100%",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,padding:"12px 14px",color:"#e8edf2",fontSize:14,outline:"none",boxSizing:"border-box"}}/>
+                </div>
+                <button onClick={checkAdminPwd} style={C.btnP}>Accéder →</button>
+                <button onClick={()=>{setShowAdminModal(false);setAdminPwd("");}} style={{...C.btnS,width:"100%",textAlign:"center",marginTop:10,fontSize:13}}>Annuler</button>
+              </div>
+            ):(
+              <div>
+                <div style={{textAlign:"center",marginBottom:20}}>
+                  <div style={{fontSize:36,marginBottom:8}}>⚙️</div>
+                  <h2 style={{fontSize:18,color:"#00b894"}}>Générateur de codes</h2>
+                  <p style={{color:"#90a4ae",fontSize:13,marginTop:4}}>Entre les infos du client</p>
+                </div>
+                <div style={{marginBottom:12}}>
+                  <div style={{fontSize:11,color:"#90a4ae",marginBottom:6,fontWeight:600,textTransform:"uppercase"}}>Prénom</div>
+                  <input value={adminPrenom} onChange={e=>setAdminPrenom(e.target.value)} placeholder="Prénom du client"
+                    style={{width:"100%",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,padding:"11px 14px",color:"#e8edf2",fontSize:14,outline:"none",boxSizing:"border-box"}}/>
+                </div>
+                <div style={{marginBottom:12}}>
+                  <div style={{fontSize:11,color:"#90a4ae",marginBottom:6,fontWeight:600,textTransform:"uppercase"}}>Nom</div>
+                  <input value={adminNom} onChange={e=>setAdminNom(e.target.value)} placeholder="Nom du client"
+                    style={{width:"100%",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,padding:"11px 14px",color:"#e8edf2",fontSize:14,outline:"none",boxSizing:"border-box"}}/>
+                </div>
+                <div style={{marginBottom:14}}>
+                  <div style={{fontSize:11,color:"#90a4ae",marginBottom:6,fontWeight:600,textTransform:"uppercase"}}>Poste visé</div>
+                  <input value={adminPoste} onChange={e=>setAdminPoste(e.target.value)} placeholder="Poste visé"
+                    style={{width:"100%",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,padding:"11px 14px",color:"#e8edf2",fontSize:14,outline:"none",boxSizing:"border-box"}}/>
+                </div>
+                <button onClick={genAdminCode} style={C.btnP}>🔑 Générer le code</button>
+                {adminCode&&(
+                  <div style={{background:"rgba(0,184,148,0.1)",border:"2px solid rgba(0,184,148,0.4)",borderRadius:14,padding:20,textAlign:"center",marginTop:16}}>
+                    <p style={{color:"#90a4ae",fontSize:12,marginBottom:6}}>{adminPrenom} {adminNom} — {adminPoste}</p>
+                    <div style={{fontSize:42,fontWeight:900,color:"#00b894",letterSpacing:8,marginBottom:8}}>{adminCode}</div>
+                    <button onClick={()=>{navigator.clipboard.writeText(adminCode);alert("Code copié !");}}
+                      style={{...C.btnS,fontSize:13}}>📋 Copier le code</button>
+                  </div>
+                )}
+                <button onClick={()=>{setShowAdminModal(false);setAdminUnlocked(false);setAdminCode("");setAdminPrenom("");setAdminNom("");setAdminPoste("");}}
+                  style={{...C.btnS,width:"100%",textAlign:"center",marginTop:12,fontSize:13}}>Fermer</button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  // PAGE RÉSULTAT
+  if(page==="result") return(
+    <div style={C.root}>
+      <div style={C.hdr}>
+        <div style={{display:"flex",alignItems:"center",gap:10}}>
+          <div style={C.logo}>✨</div>
+          <div style={{fontWeight:700,fontSize:17}}>CV Pro Gabon</div>
+        </div>
+        {!isPaid&&<div style={{background:"rgba(255,183,77,0.15)",border:"1px solid rgba(255,183,77,0.3)",borderRadius:20,padding:"4px 12px",fontSize:11,color:"#ffcc80",fontWeight:600}}>VERSION GRATUITE</div>}
+        {isPaid&&<div style={{background:"rgba(0,184,148,0.15)",border:"1px solid rgba(0,184,148,0.3)",borderRadius:20,padding:"4px 12px",fontSize:11,color:"#00b894",fontWeight:600}}>👑 PREMIUM</div>}
+      </div>
+      <div style={C.wrap} className="fade">
+        <div style={{textAlign:"center",marginBottom:24}}>
+          <div style={{fontSize:44,marginBottom:8}}>{isPaid?"🎉":"👁️"}</div>
+          <h2 style={{fontSize:20,marginBottom:6}}>{isPaid?"Ton CV Premium est prêt !":"Aperçu de ton CV gratuit"}</h2>
+          <p style={{color:"#90a4ae",fontSize:13}}>{isPaid?"Copie le texte et colle dans Word ou Google Docs":"Passe au Premium pour un CV sans filigrane + lettre de motivation"}</p>
+        </div>
+
+        {isPaid&&form.typeDoc==="les_deux"&&(
+          <div style={{display:"flex",gap:8,marginBottom:16,background:"rgba(255,255,255,0.04)",borderRadius:12,padding:4}}>
+            {[{id:"cv",l:"📄 CV"},{id:"lettre",l:"✉️ Lettre"}].map(t=>(
+              <button key={t.id} onClick={()=>setActiveTab(t.id)} style={{flex:1,padding:"9px",borderRadius:9,border:"none",background:activeTab===t.id?"rgba(0,184,148,0.2)":"transparent",color:activeTab===t.id?"#00b894":"#90a4ae",fontWeight:activeTab===t.id?700:400,cursor:"pointer",fontSize:13}}>{t.l}</button>
+            ))}
+          </div>
+        )}
+
+        <div className="cv-preview" style={{background:"#fff",borderRadius:16,padding:"28px",color:"#1a1a2e",minHeight:280,boxShadow:"0 20px 60px rgba(0,0,0,0.3)",marginBottom:16,overflow:"hidden"}}>
+          <div dangerouslySetInnerHTML={{__html:activeTab==="cv"?result.cv:result.lettre}}/>
+        </div>
+
+        {!isPaid&&isFreePlan&&(
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:16}}>
+            <button onClick={printDoc} style={{...C.btnP,background:"linear-gradient(135deg,#636e72,#b2bec3)"}}>
+              📥 Télécharger mon CV gratuit (PDF)
+            </button>
+            <div style={{background:"rgba(0,184,148,0.08)",border:"1px solid rgba(0,184,148,0.2)",borderRadius:12,padding:"14px",textAlign:"center"}}>
+              <p style={{color:"#90a4ae",fontSize:12,marginBottom:10}}>👑 Tu veux un CV sans filigrane, plus élégant + une lettre de motivation ?</p>
+              <button onClick={()=>{setPage("form");setStep(3);}} style={C.btnP}>✨ Voir les modèles Premium</button>
+            </div>
+          </div>
+        )}
+        {!isPaid&&!isFreePlan&&(
+          <div style={{background:"rgba(0,184,148,0.08)",border:"2px solid rgba(0,184,148,0.3)",borderRadius:12,padding:"16px",marginBottom:16,textAlign:"center"}}>
+            <p style={{color:"#e8edf2",fontSize:14,fontWeight:700,marginBottom:4}}>👆 Voici ton CV Premium !</p>
+            <p style={{color:"#90a4ae",fontSize:12,marginBottom:12}}>Les sections floutées seront visibles après paiement</p>
+            <button onClick={()=>setShowPayModal(true)} style={C.btnP}>👑 Débloquer pour 2 000 FCFA</button>
+          </div>
+        )}
+
+        {isPaid&&(
+          <div style={{display:"flex",gap:10,marginBottom:10}}>
+            <button onClick={()=>copy(activeTab==="cv"?result.cv:result.lettre)}
+              style={{flex:1,padding:"13px",borderRadius:12,border:`1px solid ${copied?"rgba(0,184,148,0.4)":"rgba(255,255,255,0.15)"}`,background:copied?"rgba(0,184,148,0.1)":"rgba(255,255,255,0.06)",color:copied?"#00b894":"#e8edf2",fontWeight:600,cursor:"pointer",fontSize:14}}>
+              {copied?"✅ Copié !":"📋 Copier le texte"}
+            </button>
+            <button onClick={reset} style={{flex:1,...C.btnP,width:"auto"}}>✨ Nouveau CV</button>
+          </div>
+        )}
+        {!isPaid&&(
+          <div style={{display:"flex",gap:10,marginBottom:10}}>
+            <button onClick={printDoc} style={{...C.btnS,flex:1}}>📥 Télécharger PDF</button>
+            <button onClick={reset} style={{...C.btnS,flex:1}}>← Refaire</button>
+          </div>
+        )}
+        {isPaid&&<button onClick={reset} style={{...C.btnS,width:"100%",textAlign:"center",marginTop:8}}>🔄 Nouveau CV</button>}
+      </div>
+
+      {/* Modal paiement */}
+      {showPayModal&&(
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:100,padding:"20px"}}>
+          <div style={{background:"#1a2f45",borderRadius:20,padding:28,maxWidth:380,width:"100%",border:"1px solid rgba(255,255,255,0.1)"}}>
+            <div style={{textAlign:"center",marginBottom:20}}>
+              <div style={{fontSize:40,marginBottom:8}}>📱</div>
+              <h2 style={{fontSize:18,marginBottom:4}}>Paiement Mobile Money</h2>
+              <p style={{color:"#90a4ae",fontSize:13}}>3 étapes simples</p>
+            </div>
+            <div style={{background:"rgba(0,184,148,0.08)",border:"1px solid rgba(0,184,148,0.2)",borderRadius:12,padding:"16px",marginBottom:16}}>
+              <p style={{color:"#e8edf2",fontSize:14,marginBottom:12,fontWeight:700}}>📋 Comment payer :</p>
+              <p style={{color:"#90a4ae",fontSize:13,marginBottom:8}}><strong style={{color:"#00b894"}}>1.</strong> Envoie <strong style={{color:"#00b894"}}>2 000 FCFA</strong> sur :</p>
+              <div style={{display:"flex",gap:8,marginBottom:12}}>
+                <div style={{flex:1,background:"rgba(229,57,53,0.15)",border:"1px solid rgba(229,57,53,0.3)",borderRadius:10,padding:"10px",textAlign:"center"}}>
+                  <p style={{color:"#ef5350",fontWeight:700,fontSize:11,marginBottom:4}}>AIRTEL MONEY</p>
+                  <p style={{color:"#e8edf2",fontWeight:700,fontSize:15,letterSpacing:1}}>077 31 51 01</p>
+                  <p style={{color:"#90a4ae",fontSize:11}}>Narcisse E.</p>
+                </div>
+                <div style={{flex:1,background:"rgba(0,137,123,0.15)",border:"1px solid rgba(0,137,123,0.3)",borderRadius:10,padding:"10px",textAlign:"center"}}>
+                  <p style={{color:"#26a69a",fontWeight:700,fontSize:11,marginBottom:4}}>MOOV MONEY</p>
+                  <p style={{color:"#e8edf2",fontWeight:700,fontSize:15,letterSpacing:1}}>062 16 97 12</p>
+                  <p style={{color:"#90a4ae",fontSize:11}}>Narcisse E.</p>
+                </div>
+              </div>
+              <p style={{color:"#90a4ae",fontSize:13,marginBottom:8}}><strong style={{color:"#00b894"}}>2.</strong> Envoie le screenshot + ton <strong>prénom, nom et poste</strong> sur WhatsApp au <strong style={{color:"#00b894"}}>062 16 97 12</strong></p>
+              <p style={{color:"#90a4ae",fontSize:13}}><strong style={{color:"#00b894"}}>3.</strong> Entre le <strong>code à 6 chiffres</strong> reçu ci-dessous</p>
+            </div>
+            <div style={{marginBottom:14}}>
+              <div style={{fontSize:11,color:"#90a4ae",marginBottom:6,fontWeight:600,textTransform:"uppercase"}}>Code de déblocage</div>
+              <input type="number" value={codeInput} onChange={e=>setCodeInput(e.target.value.slice(0,6))}
+                placeholder="Ex: 123456" maxLength={6}
+                style={{width:"100%",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,padding:"13px",color:"#e8edf2",fontSize:20,outline:"none",boxSizing:"border-box",textAlign:"center",letterSpacing:6,fontWeight:700}}/>
+              {codeError&&<p style={{color:"#ef9a9a",fontSize:12,marginTop:6}}>{codeError}</p>}
+            </div>
+            <button onClick={verifyCode} style={{...C.btnP,marginBottom:10}}>✅ Valider et débloquer</button>
+            <button onClick={()=>{setShowPayModal(false);setCodeInput("");setCodeError("");}} style={{...C.btnS,width:"100%",textAlign:"center",fontSize:13}}>Annuler</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  // PAGE FORMULAIRE
+  return(
+    <div style={C.root}>
+      <div style={C.hdr}>
+        <div style={{display:"flex",alignItems:"center",gap:10}}>
+          <div style={C.logo}>✨</div>
+          <div><div style={{fontWeight:700,fontSize:17}}>CV Pro Gabon</div><div style={{fontSize:11,color:"#64b5f6"}}>Générateur de CV 🇬🇦</div></div>
+        </div>
+        <button onClick={()=>setPage("home")} style={{background:"none",border:"none",color:"#64b5f6",cursor:"pointer",fontSize:13}}>← Accueil</button>
+      </div>
+      <div style={C.wrap}>
+        <div style={{marginBottom:28}}>
+          <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
+            {STEPS.map((s,i)=>(<span key={i} style={{fontSize:10,fontWeight:i===step?700:400,color:i<=step?"#00b894":"#546e7a"}}>{s}</span>))}
+          </div>
+          <div style={{height:4,background:"rgba(255,255,255,0.08)",borderRadius:4}}>
+            <div style={{height:"100%",borderRadius:4,background:"linear-gradient(90deg,#00b894,#00cec9)",width:`${pct}%`,transition:"width 0.4s"}}/>
+          </div>
+        </div>
+
+        <div style={C.card} className="fade">
+          {step===0&&(<div>
+            <h2 style={{fontSize:17,marginBottom:4}}>👤 Informations personnelles</h2>
+            <p style={{color:"#90a4ae",fontSize:13,marginBottom:18}}>Remplis tes infos de base</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0 14px"}}>
+              <Field label="Prénom *" value={form.prenom} onChange={v=>up("prenom",v)} placeholder="Ex: Jean-Pierre"/>
+              <Field label="Nom *" value={form.nom} onChange={v=>up("nom",v)} placeholder="Ex: Mbadinga"/>
+              <Field label="Email" value={form.email} onChange={v=>up("email",v)} placeholder="ton@email.com" type="email"/>
+              <div style={{marginBottom:14}}>
+                <div style={{fontSize:11,color:"#90a4ae",marginBottom:6,fontWeight:600,textTransform:"uppercase",letterSpacing:"0.5px"}}>Téléphone</div>
+                <div style={{display:"flex",alignItems:"center",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,overflow:"hidden"}}>
+                  <span style={{padding:"11px 10px",color:"#64b5f6",fontSize:13,borderRight:"1px solid rgba(255,255,255,0.1)"}}>+241</span>
+                  <input type="tel" value={form.telephone} onChange={e=>up("telephone",e.target.value.replace(/\D/g,"").slice(0,9))} placeholder="07XXXXXXX"
+                    style={{flex:1,background:"transparent",border:"none",padding:"11px 12px",color:"#e8edf2",fontSize:14,outline:"none"}}/>
+                </div>
+              </div>
+            </div>
+            <SelectField label="Ville *" value={form.ville} onChange={v=>up("ville",v)} options={VILLES}/>
+            <Field label="Poste visé *" value={form.poste} onChange={v=>up("poste",v)} placeholder="Ex: Responsable Logistique, Comptable..."/>
+            <SelectField label="Secteur d'activité *" value={form.secteur} onChange={v=>up("secteur",v)} options={SECTEURS}/>
+            <Field label="Entreprise ciblée (optionnel)" value={form.entreprise} onChange={v=>up("entreprise",v)} placeholder="Ex: TotalEnergies, OLAM Gabon..."/>
+          </div>)}
+
+          {step===1&&(<div>
+            <h2 style={{fontSize:17,marginBottom:4}}>💼 Expériences & Compétences</h2>
+            <p style={{color:"#90a4ae",fontSize:13,marginBottom:18}}>Décris ton parcours</p>
+            <Textarea label="Expériences professionnelles *" value={form.experience} onChange={v=>up("experience",v)}
+              placeholder="Ex: Stage de 6 mois en achats chez OLAM Gabon (gestion bons de commande, suivi fournisseurs); Agent commercial chez Prix Import..." rows={5}/>
+            <Textarea label="Compétences clés" value={form.competences} onChange={v=>up("competences",v)}
+              placeholder="Ex: Excel, ERP SAP, gestion de stock, négociation, Microsoft Office..." rows={3}/>
+            <Field label="Langues parlées" value={form.langues} onChange={v=>up("langues",v)} placeholder="Ex: Français (natif), Anglais (intermédiaire)"/>
+          </div>)}
+
+          {step===2&&(<div>
+            <h2 style={{fontSize:17,marginBottom:4}}>🎓 Formation académique</h2>
+            <p style={{color:"#90a4ae",fontSize:13,marginBottom:18}}>Ton parcours scolaire</p>
+            <SelectField label="Niveau d'études *" value={form.niveau} onChange={v=>up("niveau",v)} options={NIVEAUX}/>
+            <Field label="Diplôme / Spécialité *" value={form.formation} onChange={v=>up("formation",v)} placeholder="Ex: Master 1 Logistique et Supply Chain"/>
+            <SelectField label="Établissement" value={form.etablissement} onChange={v=>up("etablissement",v)} options={ECOLES}/>
+          </div>)}
+
+          {step===3&&(<div>
+            <h2 style={{fontSize:17,marginBottom:4}}>📋 Choisir ton plan</h2>
+            <p style={{color:"#90a4ae",fontSize:13,marginBottom:18}}>Gratuit ou Premium ?</p>
+
+            {/* Plan Gratuit */}
+            <div style={{marginBottom:16}}>
+              <div style={{fontSize:11,color:"#90a4ae",marginBottom:8,fontWeight:600,textTransform:"uppercase"}}>📋 Plan Gratuit</div>
+              {MODELES_GRATUIT.map(m=>(
+                <button key={m.id} onClick={()=>up("modele",m.id)} style={{display:"flex",alignItems:"center",gap:14,padding:"14px 18px",width:"100%",background:form.modele===m.id?"rgba(255,255,255,0.08)":"rgba(255,255,255,0.03)",border:`2px solid ${form.modele===m.id?"rgba(255,255,255,0.3)":"rgba(255,255,255,0.06)"}`,borderRadius:12,cursor:"pointer",textAlign:"left",marginBottom:8}}>
+                  <span style={{fontSize:24}}>{m.icon}</span>
+                  <div>
+                    <div style={{fontWeight:600,color:form.modele===m.id?"#e8edf2":"#90a4ae",fontSize:14}}>{m.label}</div>
+                    <div style={{color:"#546e7a",fontSize:11,marginTop:2}}>{m.desc}</div>
+                  </div>
+                  <span style={{marginLeft:"auto",color:"#00b894",fontWeight:700,fontSize:14}}>Gratuit</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Plans Premium */}
+            <div>
+              <div style={{fontSize:11,color:"#00b894",marginBottom:8,fontWeight:600,textTransform:"uppercase"}}>👑 Plans Premium — 2 000 FCFA</div>
+              {/* Aperçus des modèles Premium */}
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:12}}>
+                {/* Aperçu Moderne */}
+                <button onClick={()=>up("modele","moderne")} style={{padding:0,border:`2px solid ${form.modele==="moderne"?"#00b894":"rgba(255,255,255,0.1)"}`,borderRadius:10,cursor:"pointer",overflow:"hidden",background:"white"}}>
+                  <div style={{background:"linear-gradient(135deg,#00b894,#00cec9)",padding:"8px",color:"white"}}>
+                    <div style={{fontSize:7,fontWeight:700,marginBottom:1}}>Jean DUPONT</div>
+                    <div style={{fontSize:5,opacity:0.9}}>Responsable Logistique</div>
+                  </div>
+                  <div style={{padding:"6px",background:"white"}}>
+                    <div style={{fontSize:5,color:"#00b894",fontWeight:700,marginBottom:3,textTransform:"uppercase"}}>Profil</div>
+                    <div style={{height:2,background:"#eee",marginBottom:3,borderRadius:1}}/>
+                    <div style={{fontSize:5,color:"#00b894",fontWeight:700,marginBottom:2,textTransform:"uppercase"}}>Expériences</div>
+                    <div style={{height:2,background:"#eee",marginBottom:1,borderRadius:1}}/>
+                    <div style={{height:2,background:"#eee",marginBottom:3,borderRadius:1}}/>
+                    <div style={{fontSize:5,color:"#00b894",fontWeight:700,textTransform:"uppercase"}}>Compétences</div>
+                  </div>
+                  <div style={{background:form.modele==="moderne"?"#00b894":"#f0f0f0",padding:"4px",textAlign:"center"}}>
+                    <span style={{fontSize:8,fontWeight:700,color:form.modele==="moderne"?"white":"#666"}}>✨ Moderne</span>
+                  </div>
+                </button>
+
+                {/* Aperçu Créatif */}
+                <button onClick={()=>up("modele","creatif")} style={{padding:0,border:`2px solid ${form.modele==="creatif"?"#00b894":"rgba(255,255,255,0.1)"}`,borderRadius:10,cursor:"pointer",overflow:"hidden",background:"white"}}>
+                  <div style={{display:"grid",gridTemplateColumns:"40% 60%",minHeight:90}}>
+                    <div style={{background:"#1a237e",padding:"6px"}}>
+                      <div style={{fontSize:6,color:"white",fontWeight:700,marginBottom:2}}>Jean<br/>DUPONT</div>
+                      <div style={{fontSize:4,color:"rgba(255,255,255,0.7)",marginBottom:4}}>Logistique</div>
+                      <div style={{fontSize:4,color:"#80cbc4",fontWeight:700,textTransform:"uppercase",marginBottom:2}}>Contact</div>
+                      <div style={{height:1,background:"rgba(255,255,255,0.2)",marginBottom:2}}/>
+                      <div style={{fontSize:4,color:"#80cbc4",fontWeight:700,textTransform:"uppercase",marginBottom:2}}>Compét.</div>
+                      <div style={{height:1,background:"rgba(255,255,255,0.2)",marginBottom:1}}/>
+                      <div style={{height:1,background:"rgba(255,255,255,0.2)"}}/>
+                    </div>
+                    <div style={{background:"white",padding:"6px"}}>
+                      <div style={{fontSize:4,color:"#1a237e",fontWeight:700,textTransform:"uppercase",marginBottom:2}}>Profil</div>
+                      <div style={{height:1,background:"#e8f5e9",marginBottom:3}}/>
+                      <div style={{fontSize:4,color:"#1a237e",fontWeight:700,textTransform:"uppercase",marginBottom:2}}>Expériences</div>
+                      <div style={{height:1,background:"#eee",marginBottom:1}}/>
+                      <div style={{height:1,background:"#eee",marginBottom:3}}/>
+                      <div style={{fontSize:4,color:"#1a237e",fontWeight:700,textTransform:"uppercase"}}>Formation</div>
+                    </div>
+                  </div>
+                  <div style={{background:form.modele==="creatif"?"#00b894":"#f0f0f0",padding:"4px",textAlign:"center"}}>
+                    <span style={{fontSize:8,fontWeight:700,color:form.modele==="creatif"?"white":"#666"}}>🎨 Créatif</span>
+                  </div>
+                </button>
+
+                {/* Aperçu Élite */}
+                <button onClick={()=>up("modele","elite")} style={{padding:0,border:`2px solid ${form.modele==="elite"?"#00b894":"rgba(255,255,255,0.1)"}`,borderRadius:10,cursor:"pointer",overflow:"hidden",background:"white"}}>
+                  <div style={{padding:"8px",background:"white"}}>
+                    <div style={{borderLeft:"3px solid #c0392b",paddingLeft:4,marginBottom:6}}>
+                      <div style={{fontSize:8,fontWeight:700,color:"#c0392b"}}>Jean DUPONT</div>
+                      <div style={{fontSize:5,color:"#555",fontStyle:"italic"}}>Responsable</div>
+                    </div>
+                    <div style={{background:"#f8f8f8",padding:"3px 4px",marginBottom:5,borderRadius:2}}>
+                      <div style={{fontSize:4,color:"#666"}}>📧 email  📞 tel  📍 ville</div>
+                    </div>
+                    <div style={{fontSize:5,color:"#c0392b",fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Profil</div>
+                    <div style={{height:1,background:"#eee",marginBottom:3}}/>
+                    <div style={{fontSize:5,color:"#c0392b",fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Expériences</div>
+                    <div style={{height:1,background:"#eee"}}/>
+                  </div>
+                  <div style={{background:form.modele==="elite"?"#00b894":"#f0f0f0",padding:"4px",textAlign:"center"}}>
+                    <span style={{fontSize:8,fontWeight:700,color:form.modele==="elite"?"white":"#666"}}>👑 Élite</span>
+                  </div>
+                </button>
+              </div>
+              <p style={{color:"#546e7a",fontSize:11,textAlign:"center",marginBottom:12}}>Appuie sur un modèle pour le sélectionner</p>
+            </div>
+
+            {/* Type doc (premium only) */}
+            {!isFreePlan&&(
+              <div style={{marginTop:16,background:"rgba(0,184,148,0.06)",border:"1px solid rgba(0,184,148,0.15)",borderRadius:12,padding:"14px"}}>
+                <div style={{fontSize:11,color:"#00b894",marginBottom:10,fontWeight:600,textTransform:"uppercase"}}>Type de document</div>
+                {[{id:"cv",l:"📄 CV uniquement"},{id:"lettre",l:"✉️ Lettre uniquement"},{id:"les_deux",l:"📦 CV + Lettre (recommandé)"}].map(d=>(
+                  <button key={d.id} onClick={()=>up("typeDoc",d.id)} style={{display:"block",width:"100%",padding:"10px 14px",marginBottom:6,background:form.typeDoc===d.id?"rgba(0,184,148,0.2)":"transparent",border:`1px solid ${form.typeDoc===d.id?"rgba(0,184,148,0.4)":"rgba(255,255,255,0.08)"}`,borderRadius:10,cursor:"pointer",color:form.typeDoc===d.id?"#00b894":"#90a4ae",textAlign:"left",fontSize:13,fontWeight:form.typeDoc===d.id?600:400}}>
+                    {d.l}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>)}
+        </div>
+
+        <div style={{display:"flex",gap:12}}>
+          {step>0&&<button onClick={()=>setStep(s=>s-1)} style={C.btnS}>← Retour</button>}
+          {step<STEPS.length-1
+            ?<button onClick={()=>setStep(s=>s+1)} disabled={!ok()} style={{...C.btnP,opacity:ok()?1:0.4,cursor:ok()?"pointer":"not-allowed"}}>Continuer →</button>
+            :<div style={{flex:1,display:"flex",flexDirection:"column",gap:10}}>
+              <div style={{display:"flex",flexDirection:"column",gap:10,width:"100%",flex:1}}>
+              {isFreePlan
+                ?<button onClick={()=>genDoc(false)} style={C.btnP}>📋 Générer mon CV gratuit</button>
+                :<>
+                  <button onClick={()=>genDoc("preview")} style={{...C.btnP,background:"rgba(0,184,148,0.15)",border:"2px solid rgba(0,184,148,0.5)",color:"#00b894"}}>👁️ Voir l'aperçu Premium gratuit</button>
+                  <button onClick={()=>setShowPayModal(true)} style={C.btnP}>👑 Payer 2 000 FCFA et générer</button>
+                </>
+              }
+            </div>
+            </div>
+          }
+        </div>
+        <p style={{color:"#546e7a",fontSize:11,textAlign:"center",marginTop:12}}>💾 Tes données sont sauvegardées automatiquement</p>
+      </div>
+
+      {/* Modal paiement depuis formulaire */}
+      {showPayModal&&(
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:100,padding:"20px"}}>
+          <div style={{background:"#1a2f45",borderRadius:20,padding:28,maxWidth:380,width:"100%",border:"1px solid rgba(255,255,255,0.1)"}}>
+            <div style={{textAlign:"center",marginBottom:20}}>
+              <div style={{fontSize:40,marginBottom:8}}>📱</div>
+              <h2 style={{fontSize:18,marginBottom:4}}>Paiement Mobile Money</h2>
+            </div>
+            <div style={{background:"rgba(0,184,148,0.08)",border:"1px solid rgba(0,184,148,0.2)",borderRadius:12,padding:"16px",marginBottom:16}}>
+              <p style={{color:"#e8edf2",fontSize:13,fontWeight:700,marginBottom:10}}>📋 3 étapes simples :</p>
+              <p style={{color:"#90a4ae",fontSize:13,marginBottom:8}}><strong style={{color:"#00b894"}}>1.</strong> Envoie <strong style={{color:"#00b894"}}>2 000 FCFA</strong> sur :</p>
+              <div style={{display:"flex",gap:8,marginBottom:10}}>
+                <div style={{flex:1,background:"rgba(229,57,53,0.15)",borderRadius:10,padding:"10px",textAlign:"center"}}>
+                  <p style={{color:"#ef5350",fontWeight:700,fontSize:10,marginBottom:3}}>AIRTEL MONEY</p>
+                  <p style={{color:"#e8edf2",fontWeight:700,fontSize:14}}>077 31 51 01</p>
+                </div>
+                <div style={{flex:1,background:"rgba(0,137,123,0.15)",borderRadius:10,padding:"10px",textAlign:"center"}}>
+                  <p style={{color:"#26a69a",fontWeight:700,fontSize:10,marginBottom:3}}>MOOV MONEY</p>
+                  <p style={{color:"#e8edf2",fontWeight:700,fontSize:14}}>062 16 97 12</p>
+                </div>
+              </div>
+              <p style={{color:"#90a4ae",fontSize:12,marginBottom:6}}><strong style={{color:"#00b894"}}>2.</strong> Envoie screenshot + prénom/nom/poste sur WhatsApp → <strong>062 16 97 12</strong></p>
+              <p style={{color:"#90a4ae",fontSize:12}}><strong style={{color:"#00b894"}}>3.</strong> Entre le code reçu ci-dessous</p>
+            </div>
+            <div style={{marginBottom:14}}>
+              <div style={{fontSize:11,color:"#90a4ae",marginBottom:6,fontWeight:600,textTransform:"uppercase"}}>Code de déblocage</div>
+              <input type="number" value={codeInput} onChange={e=>setCodeInput(e.target.value.slice(0,6))}
+                placeholder="123456" maxLength={6}
+                style={{width:"100%",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,padding:"13px",color:"#e8edf2",fontSize:20,outline:"none",boxSizing:"border-box",textAlign:"center",letterSpacing:6,fontWeight:700}}/>
+              {codeError&&<p style={{color:"#ef9a9a",fontSize:12,marginTop:6}}>{codeError}</p>}
+            </div>
+            <button onClick={verifyCode} style={{...C.btnP,marginBottom:10}}>✅ Valider et débloquer</button>
+            <button onClick={()=>{setShowPayModal(false);setCodeInput("");setCodeError("");}} style={{...C.btnS,width:"100%",textAlign:"center",fontSize:13}}>Annuler</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
