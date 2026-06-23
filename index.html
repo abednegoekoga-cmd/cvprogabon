@@ -97,8 +97,33 @@ const STEPS=["Infos perso","Expérience","Formation","Document"];
 const VILLES=["Libreville","Port-Gentil","Franceville","Oyem","Moanda","Mouila","Lambaréné","Tchibanga","Koulamoutou","Makokou","Bitam","Ntoum","Owendo","Autre"];
 const SECTEURS=["Logistique & Supply Chain","Pétrole & Gaz","BTP & Construction","Finance & Banque","Commerce & Vente","Administration publique","Santé","Éducation","Télécommunications","Autre"];
 const NIVEAUX=["Bac","Bac+2 / BTS","Bac+3 / Licence","Bac+4 / Master 1","Bac+5 / Master 2","Doctorat"];
-const ECOLES=["AFRAM","UOB (Université Omar Bongo)","USTM","ENS","ENSET","Institut Supérieur de Technologie","ESAG","IAI Gabon","École des Cadres","PIGIER Gabon","Autre"];
-const FORM_INIT={prenom:"",nom:"",email:"",telephone:"",ville:"Libreville",poste:"",secteur:"",entreprise:"",experience:"",competences:"",langues:"Français",niveau:"",formation:"",etablissement:"",typeDoc:"les_deux",modele:"moderne"};
+const ECOLES=[
+  "UOB (Université Omar Bongo)",
+  "USTM (Université des Sciences et Techniques de Masuku)",
+  "UNG (Université Nangaa Edwige de Franceville)",
+  "UPAG (Université Protestante d'Afrique)",
+  "ENS (École Normale Supérieure)",
+  "ENSET (École Normale Supérieure de l'Enseignement Technique)",
+  "AFRAM (Académie Française de Management)",
+  "ESAG (École Supérieure d'Administration et de Gestion)",
+  "IAI Gabon (Institut Africain d'Informatique)",
+  "PIGIER Gabon",
+  "Institut Supérieur de Technologie (IST)",
+  "École des Cadres",
+  "ISIG (Institut Supérieur de l'Informatique et de Gestion)",
+  "ISCAM (Institut Supérieur de Commerce et Administration)",
+  "HETEC (Hautes Études Techniques et Commerciales)",
+  "IFAP (Institut de Formation en Administration Publique)",
+  "ENAM (École Nationale d'Administration et de Magistrature)",
+  "ENEF (École Nationale des Eaux et Forêts)",
+  "École Nationale de la Marine Marchande",
+  "Institut National des Sciences de Gestion (INSG)",
+  "Université Internationale du Gabon",
+  "Lycée Technique National Omar Bongo",
+  "CFA (Centre de Formation par Apprentissage)",
+  "Autre (précisez ci-dessous)",
+];
+const FORM_INIT={prenom:"",nom:"",email:"",telephone:"",ville:"Libreville",poste:"",secteur:"",entreprise:"",experience:"",competences:"",langues:"Français",niveau:"",formation:"",etablissement:"",autreEcole:"",typeDoc:"les_deux",modele:"moderne"};
 
 // Compteur CV créés (simulé)
 const CV_COUNT = 47;
@@ -112,8 +137,23 @@ const MODELES_PREMIUM=[
 ];
 
 function genCVGratuit(f){
-  const exp=(f.experience||"").split(/[;\n]/).filter(e=>e.trim().length>3).map(e=>`<li>${e.trim()}</li>`).join("")||`<li>${f.experience||"À compléter"}</li>`;
+  const formatExp=(text)=>{
+    if(!text) return "<li>À compléter</li>";
+    const lines = text.split("\n").filter(l=>l.trim().length>0);
+    let html = "";
+    lines.forEach(line=>{
+      const t = line.trim();
+      if(t.startsWith("-")){
+        html += `<li style="margin-left:20px;list-style-type:disc;font-size:12px;color:#555">${t.slice(1).trim()}</li>`;
+      } else {
+        html += `<li style="font-weight:700;margin-top:8px;list-style-type:disc">${t}</li>`;
+      }
+    });
+    return html||"<li>À compléter</li>";
+  };
+  const exp = formatExp(f.experience);
   const comp=(f.competences||"").split(/[,;\n]/).filter(c=>c.trim().length>2).map(c=>`<li>${c.trim()}</li>`).join("")||`<li>${f.competences||"À compléter"}</li>`;
+  const ecole = f.autreEcole&&f.etablissement==="Autre (précisez ci-dessous)" ? f.autreEcole : f.etablissement;
   return `<div class="cv-gratuit">
 <div class="watermark">CV PRO GABON — APERÇU GRATUIT</div>
 <h1>${f.prenom} ${f.nom.toUpperCase()}</h1>
@@ -125,7 +165,7 @@ ${f.email?`<p class="contact-line">📧 ${f.email}</p>`:""}
 <h2>Expériences</h2><ul>${exp}</ul>
 <h2>Compétences</h2><ul>${comp}</ul>
 <h2>Formation</h2>
-<ul><li><strong>${f.niveau}</strong> — ${f.formation}${f.etablissement?` | ${f.etablissement}`:""}</li></ul>
+<ul><li><strong>${f.niveau}</strong> — ${f.formation}${ecole?` | ${ecole}`:""}</li></ul>
 <h2>Langues</h2><p>${f.langues||"Français"}</p>
 <div class="footer-brand">✨ Généré gratuitement sur CV Pro Gabon — cvprogabon.netlify.app</div>
 </div>`;
@@ -133,8 +173,23 @@ ${f.email?`<p class="contact-line">📧 ${f.email}</p>`:""}
 
 function genCVPremium(f,modele){
   const profil=`Professionnel dynamique spécialisé en ${f.poste}, titulaire d'un ${f.niveau} en ${f.formation}${f.etablissement?` obtenu à ${f.etablissement}`:""}. Fort d'une expérience solide dans le secteur ${f.secteur} au Gabon, je me distingue par ${(f.competences||"mes compétences").split(/[,;]/)[0].trim()} et ma capacité d'adaptation. Je souhaite mettre mon expertise au service de ${f.entreprise||"votre organisation"}.`;
-  const expItems=(f.experience||"").split(/[;\n]/).filter(e=>e.trim().length>3).map(e=>`<li>${e.trim()}</li>`).join("")||`<li>${f.experience||"À compléter"}</li>`;
+  const formatExpPremium=(text)=>{
+    if(!text) return "<li>À compléter</li>";
+    const lines = text.split("\n").filter(l=>l.trim().length>0);
+    let html = "";
+    lines.forEach(line=>{
+      const t = line.trim();
+      if(t.startsWith("-")){
+        html += `<li style="margin-left:24px;list-style-type:'– ';font-size:13px;color:#555;margin-bottom:3px">${t.slice(1).trim()}</li>`;
+      } else {
+        html += `<li style="font-weight:700;margin-top:10px;font-size:14px">${t}</li>`;
+      }
+    });
+    return html||"<li>À compléter</li>";
+  };
+  const expItems = formatExpPremium(f.experience);
   const compItems=(f.competences||"").split(/[,;\n]/).filter(c=>c.trim().length>2).map(c=>`<li>${c.trim()}</li>`).join("")||`<li>${f.competences||"À compléter"}</li>`;
+  const ecoleP = f.autreEcole&&f.etablissement==="Autre (précisez ci-dessous)" ? f.autreEcole : f.etablissement;
 
   if(modele==="moderne") return `<div class="cv-moderne">
 <div class="header">
@@ -710,7 +765,8 @@ body{font-family:'Segoe UI',sans-serif;background:white;color:#1a1a2e;}
             <h2 style={{fontSize:17,marginBottom:4}}>💼 Expériences & Compétences</h2>
             <p style={{color:"#90a4ae",fontSize:13,marginBottom:18}}>Décris ton parcours</p>
             <Textarea label="Expériences professionnelles *" value={form.experience} onChange={v=>up("experience",v)}
-              placeholder="Ex: Stage de 6 mois en achats chez OLAM Gabon (gestion bons de commande, suivi fournisseurs); Agent commercial chez Prix Import..." rows={5}/>
+              placeholder={"Ex:\nResponsable Logistique chez TotalEnergies (2022-2024)\n- Gestion des stocks et approvisionnements\n- Suivi des fournisseurs\n- Optimisation des coûts\n\nStage Achats chez OLAM Gabon (6 mois)\n- Gestion des bons de commande\n- Négociation fournisseurs"} rows={7}/>
+            <p style={{color:"#546e7a",fontSize:11,marginTop:-10,marginBottom:14}}>💡 Mets le poste en gras, puis les tâches avec des tirets (-)</p>
             <Textarea label="Compétences clés" value={form.competences} onChange={v=>up("competences",v)}
               placeholder="Ex: Excel, ERP SAP, gestion de stock, négociation, Microsoft Office..." rows={3}/>
             <Field label="Langues parlées" value={form.langues} onChange={v=>up("langues",v)} placeholder="Ex: Français (natif), Anglais (intermédiaire)"/>
@@ -722,6 +778,9 @@ body{font-family:'Segoe UI',sans-serif;background:white;color:#1a1a2e;}
             <SelectField label="Niveau d'études *" value={form.niveau} onChange={v=>up("niveau",v)} options={NIVEAUX}/>
             <Field label="Diplôme / Spécialité *" value={form.formation} onChange={v=>up("formation",v)} placeholder="Ex: Master 1 Logistique et Supply Chain"/>
             <SelectField label="Établissement" value={form.etablissement} onChange={v=>up("etablissement",v)} options={ECOLES}/>
+            {(form.etablissement==="Autre (précisez ci-dessous)"||!ECOLES.includes(form.etablissement)&&form.etablissement)&&(
+              <Field label="Précise ton école" value={form.autreEcole||""} onChange={v=>up("autreEcole",v)} placeholder="Ex: Mon École Privée de Libreville"/>
+            )}
           </div>)}
 
           {step===3&&(<div>
