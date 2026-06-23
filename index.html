@@ -126,7 +126,8 @@ const ECOLES=[
 const FORM_INIT={prenom:"",nom:"",email:"",telephone:"",ville:"Libreville",poste:"",secteur:"",entreprise:"",experience:"",competences:"",langues:"Français",niveau:"",formation:"",etablissement:"",autreEcole:"",typeDoc:"les_deux",modele:"moderne"};
 
 // Compteur CV créés (simulé)
-const CV_COUNT = 47;
+const getCount=()=>{try{return parseInt(localStorage.getItem("cvpro_count")||"47");}catch{return 47;}};
+const incCount=()=>{try{localStorage.setItem("cvpro_count",String(getCount()+1));}catch{}};
 
 // Modèles
 const MODELES_GRATUIT=[{id:"classique_gratuit",label:"Basique",icon:"📋",desc:"Gratuit — avec mention CV Pro Gabon",free:true}];
@@ -342,6 +343,7 @@ function App(){
   const isFreePlan=form.modele==="classique_gratuit";
 
   const genDoc=(paid)=>{
+    incCount();
     let cv;
     if(!paid||isFreePlan){cv=genCVGratuit(form);}
     else if(paid==="preview"){
@@ -486,7 +488,7 @@ body{font-family:'Segoe UI',sans-serif;background:white;color:#1a1a2e;}
             vos chances d'emploi au Gabon
           </h1>
           <p style={{color:"#90a4ae",fontSize:14,marginBottom:24,lineHeight:1.6}}>
-            Plus de <strong style={{color:"#00b894"}}>{CV_COUNT} CV</strong> déjà créés sur CV Pro Gabon 🇬🇦
+            Plus de <strong style={{color:"#00b894"}}>{getCount()} CV</strong> déjà créés sur CV Pro Gabon 🇬🇦
           </p>
           <button onClick={()=>setPage("form")} className="pulse" style={{...C.btnP,fontSize:17,padding:"16px 32px",width:"auto",display:"inline-block"}}>
             ✨ Créer mon CV gratuitement
@@ -531,6 +533,31 @@ body{font-family:'Segoe UI',sans-serif;background:white;color:#1a1a2e;}
             "C'est super avantageux, tu gagnes en temps et c'est moins cher. C'est un bon prix !"
           </p>
           <p style={{color:"#64b5f6",fontSize:12,fontWeight:600}}>— Paul, Libreville 🇬🇦</p>
+        </div>
+
+        {/* FAQ */}
+        <div style={{marginBottom:24}}>
+          <h2 style={{fontSize:16,marginBottom:16,textAlign:"center"}}>❓ Questions fréquentes</h2>
+          {[
+            {q:"Comment ça marche ?",a:"Tu remplis le formulaire en 4 étapes, tu choisis ton modèle et tu paies 2 000 FCFA. Tu reçois un code pour débloquer ton CV PDF immédiatement."},
+            {q:"Combien de temps ça prend ?",a:"Moins de 5 minutes ! Tu remplis tes infos, tu paies et tu télécharges ton PDF directement."},
+            {q:"Comment je reçois mon CV ?",a:"Tu télécharges ton CV en PDF directement sur ton téléphone ou ordinateur après paiement."},
+            {q:"Et si j'ai un problème ?",a:"Contacte-nous directement sur WhatsApp au 062 16 97 12, on répond rapidement !"},
+          ].map((f,i)=>(
+            <div key={i} style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:12,padding:"14px 16px",marginBottom:8}}>
+              <p style={{fontWeight:700,fontSize:13,marginBottom:4,color:"#00b894"}}>❓ {f.q}</p>
+              <p style={{color:"#90a4ae",fontSize:13}}>{f.a}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* À propos */}
+        <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:16,padding:"20px",marginBottom:24}}>
+          <h2 style={{fontSize:15,marginBottom:12,color:"#64b5f6"}}>👨‍💻 À propos de CV Pro Gabon</h2>
+          <p style={{color:"#90a4ae",fontSize:13,lineHeight:1.7}}>
+            CV Pro Gabon est créé par un étudiant gabonais de Libreville qui a voulu rendre la création de CV professionnels accessible à tous. 
+            Pas besoin d'être graphiste ou de maîtriser Word — notre app fait tout pour toi en quelques minutes. 🇬🇦
+          </p>
         </div>
 
         {/* CTA final */}
@@ -680,28 +707,32 @@ body{font-family:'Segoe UI',sans-serif;background:white;color:#1a1a2e;}
       {showPayModal&&(
         <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:100,padding:"20px"}}>
           <div style={{background:"#1a2f45",borderRadius:20,padding:28,maxWidth:380,width:"100%",border:"1px solid rgba(255,255,255,0.1)"}}>
-            <div style={{textAlign:"center",marginBottom:20}}>
+            <div style={{textAlign:"center",marginBottom:16}}>
               <div style={{fontSize:40,marginBottom:8}}>📱</div>
               <h2 style={{fontSize:18,marginBottom:4}}>Paiement Mobile Money</h2>
               <p style={{color:"#90a4ae",fontSize:13}}>3 étapes simples</p>
             </div>
-            <div style={{background:"rgba(0,184,148,0.08)",border:"1px solid rgba(0,184,148,0.2)",borderRadius:12,padding:"16px",marginBottom:16}}>
-              <p style={{color:"#e8edf2",fontSize:14,marginBottom:12,fontWeight:700}}>📋 Comment payer :</p>
-              <p style={{color:"#90a4ae",fontSize:13,marginBottom:8}}><strong style={{color:"#00b894"}}>1.</strong> Envoie <strong style={{color:"#00b894"}}>2 000 FCFA</strong> sur :</p>
-              <div style={{display:"flex",gap:8,marginBottom:12}}>
+            <div style={{background:"rgba(0,184,148,0.08)",border:"1px solid rgba(0,184,148,0.2)",borderRadius:12,padding:"16px",marginBottom:12}}>
+              <p style={{color:"#e8edf2",fontSize:13,fontWeight:700,marginBottom:10}}>📋 Comment payer :</p>
+              <p style={{color:"#90a4ae",fontSize:12,marginBottom:8}}><strong style={{color:"#00b894"}}>1.</strong> Envoie <strong style={{color:"#00b894"}}>2 000 FCFA</strong> sur :</p>
+              <div style={{display:"flex",gap:8,marginBottom:10}}>
                 <div style={{flex:1,background:"rgba(229,57,53,0.15)",border:"1px solid rgba(229,57,53,0.3)",borderRadius:10,padding:"10px",textAlign:"center"}}>
-                  <p style={{color:"#ef5350",fontWeight:700,fontSize:11,marginBottom:4}}>AIRTEL MONEY</p>
-                  <p style={{color:"#e8edf2",fontWeight:700,fontSize:15,letterSpacing:1}}>077 31 51 01</p>
-                  <p style={{color:"#90a4ae",fontSize:11}}>Narcisse E.</p>
+                  <p style={{color:"#ef5350",fontWeight:700,fontSize:10,marginBottom:3}}>AIRTEL MONEY</p>
+                  <p style={{color:"#e8edf2",fontWeight:700,fontSize:15}}>077 31 51 01</p>
+                  <p style={{color:"#90a4ae",fontSize:10}}>Narcisse E.</p>
                 </div>
                 <div style={{flex:1,background:"rgba(0,137,123,0.15)",border:"1px solid rgba(0,137,123,0.3)",borderRadius:10,padding:"10px",textAlign:"center"}}>
-                  <p style={{color:"#26a69a",fontWeight:700,fontSize:11,marginBottom:4}}>MOOV MONEY</p>
-                  <p style={{color:"#e8edf2",fontWeight:700,fontSize:15,letterSpacing:1}}>062 16 97 12</p>
-                  <p style={{color:"#90a4ae",fontSize:11}}>Narcisse E.</p>
+                  <p style={{color:"#26a69a",fontWeight:700,fontSize:10,marginBottom:3}}>MOOV MONEY</p>
+                  <p style={{color:"#e8edf2",fontWeight:700,fontSize:15}}>062 16 97 12</p>
+                  <p style={{color:"#90a4ae",fontSize:10}}>Narcisse E.</p>
                 </div>
               </div>
-              <p style={{color:"#90a4ae",fontSize:13,marginBottom:8}}><strong style={{color:"#00b894"}}>2.</strong> Envoie le screenshot + ton <strong>prénom, nom et poste</strong> sur WhatsApp au <strong style={{color:"#00b894"}}>062 16 97 12</strong></p>
-              <p style={{color:"#90a4ae",fontSize:13}}><strong style={{color:"#00b894"}}>3.</strong> Entre le <strong>code à 6 chiffres</strong> reçu ci-dessous</p>
+              <p style={{color:"#90a4ae",fontSize:12,marginBottom:8}}><strong style={{color:"#00b894"}}>2.</strong> Clique le bouton WhatsApp ci-dessous pour envoyer le screenshot automatiquement</p>
+              <a href={`https://wa.me/24162169712?text=${encodeURIComponent("Bonjour, je viens de payer 2000 FCFA pour mon CV Premium.%0APrénom: "+form.prenom+"%0ANom: "+form.nom+"%0APoste: "+form.poste+"%0AJe vous envoie le screenshot ci-joint.")}`} target="_blank"
+                style={{display:"block",background:"#25D366",borderRadius:10,padding:"12px",textAlign:"center",color:"white",fontWeight:700,fontSize:14,textDecoration:"none",marginBottom:8}}>
+                📲 Envoyer sur WhatsApp automatiquement
+              </a>
+              <p style={{color:"#90a4ae",fontSize:12}}><strong style={{color:"#00b894"}}>3.</strong> Entre le <strong>code à 6 chiffres</strong> reçu ci-dessous</p>
             </div>
             <div style={{marginBottom:14}}>
               <div style={{fontSize:11,color:"#90a4ae",marginBottom:6,fontWeight:600,textTransform:"uppercase"}}>Code de déblocage</div>
