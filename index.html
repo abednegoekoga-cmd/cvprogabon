@@ -858,7 +858,7 @@ body{font-family:'Segoe UI',sans-serif;background:white;color:#1a1a2e;}
           {pdfLoading?<span className="spinner"/>:<span>⬇️</span>}
           {pdfLoading?"Génération PDF...":t.btn.downloadPDF}
         </button>}
-        <button onClick={printDoc} style={{...C.btnS,textAlign:"center",width:"100%"}}>{t.btn.print}</button>
+
         <button onClick={()=>copy(activeTab==="cv"?result.cv:result.lettre)} style={{...C.btnS,textAlign:"center",width:"100%"}}>{copied?"✅ Copié !":t.btn.copy}</button>
         {!isPaid&&!isFreePlan&&<button onClick={()=>setShowPayModal(true)} style={C.btnGold}>👑 {t.btn.pay} — {country.price} {country.currency}</button>}
         <button onClick={reset} style={{...C.btnS,textAlign:"center",width:"100%"}}>{t.btn.newCV}</button>
