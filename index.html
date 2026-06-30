@@ -694,18 +694,15 @@ function App(){
   const genDoc=(paid)=>{
     incCount();
     let cv,lettre;
-    if(!paid||isFreePlan){
+    // MODE GRATUIT TEMPORAIRE - tous les CV sont en version complète
+    if(isFreePlan){
       cv=genCVGratuit(form,lang);
-    } else if(paid==="preview"){
-      const full=genCVPremium(form,form.modele,lang);
-      cv=full.replace(/<h2[^>]*>(?:Expériences?|Experience|Experiencia|Experiência)[^<]*<\/h2><ul>([\s\S]*?)<\/ul>/i,
-        (m,p)=>m.replace(p,`<span class="blur-zone">${p}</span>`));
     } else {
       cv=genCVPremium(form,form.modele,lang);
     }
     lettre=genLettre(form,lang);
     setResult({cv,lettre});
-    setIsPaid(paid===true&&!isFreePlan);
+    setIsPaid(true); // Tout est débloqué pendant la période gratuite
     setActiveTab("cv");
     setPage("result");
   };
@@ -861,7 +858,7 @@ body{font-family:'Segoe UI',sans-serif;background:white;color:#1a1a2e;}
         {isPaid&&<button onClick={printDoc} style={{...C.btnS,textAlign:"center",width:"100%"}}>{t.btn.print}</button>}
 
         <button onClick={()=>copy(activeTab==="cv"?result.cv:result.lettre)} style={{...C.btnS,textAlign:"center",width:"100%"}}>{copied?"✅ Copié !":t.btn.copy}</button>
-        {!isPaid&&!isFreePlan&&<button onClick={()=>setShowPayModal(true)} style={C.btnGold}>👑 {t.btn.pay} — {country.price} {country.currency}</button>}
+
         <button onClick={reset} style={{...C.btnS,textAlign:"center",width:"100%"}}>{t.btn.newCV}</button>
       </div>
     </div>
@@ -1016,13 +1013,7 @@ body{font-family:'Segoe UI',sans-serif;background:white;color:#1a1a2e;}
         {step<t.steps.length-1
           ?<button onClick={()=>setStep(s=>s+1)} disabled={!ok()} style={{...C.btnP,opacity:ok()?1:0.4,cursor:ok()?"pointer":"not-allowed"}}>{t.btn.next}</button>
           :<div style={{flex:1,display:"flex",flexDirection:"column",gap:10}}>
-            {isFreePlan
-              ?<button onClick={()=>genDoc(false)} style={C.btnP}>{t.btn.generate}</button>
-              :<>
-                <button onClick={()=>genDoc("preview")} style={{...C.btnP,background:"rgba(0,212,170,0.1)",border:"2px solid rgba(0,212,170,0.4)",color:"#00d4aa"}}>{t.btn.preview}</button>
-                <button onClick={()=>setShowPayModal(true)} style={C.btnGold}>{t.btn.pay} — {country.price} {country.currency}</button>
-              </>
-            }
+            <button onClick={()=>genDoc(true)} style={C.btnGold}>✨ {t.btn.generate} — GRATUIT 🎉</button>
           </div>
         }
       </div>
